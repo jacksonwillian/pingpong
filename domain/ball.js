@@ -4,6 +4,6 @@ class Ball extends Base {
     * @param  y
     */
     constructor(x, y) {
-        super(x, y, 5, 5);
+        super(x, y, 5, 5, 'ball');
     }
 }

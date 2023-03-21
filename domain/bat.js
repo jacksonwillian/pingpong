@@ -4,6 +4,6 @@ class Bat extends Base {
     * @param  y
     */
     constructor(x, y) {
-        super(x, y,  60, 5);
+        super(x, y,  60, 5, 'bat');
     }
 }
