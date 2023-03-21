@@ -10,11 +10,19 @@ var ctx = canvas.getContext("2d");
 
 ctx.fillStyle = "#fff";
 
-const ball          = new Ball(104, 16);
-const playerBat     = new Bat(75, 334);
-const computerBat   = new Bat(75, 10);
+const ball          = new Ball(100, 175);
+const movimentBall  = new Moviment('up', 'right', 1);
+
+const playerBat     = new Bat(74, 334);
+const computerBat   = new Bat(74, 10);
+
 const allObjects    = [ball, playerBat, computerBat];
 
+
+function moveBall(ball, movimentBall) {
+    ball.y = movimentBall.vertical === 'up'? --ball.y: ++ball.y;
+    ball.x = movimentBall.horizontal === 'right'? ++ball.x : --ball.x;
+}
 
 setInterval(() => {
 
@@ -25,13 +33,17 @@ setInterval(() => {
         canvas.height
     );
 
+    this.moveBall(ball, movimentBall);
+
     allObjects.forEach(object => {
+
         ctx.fillRect(
             object.x, 
             object.y, 
             object.width, 
             object.height
         );
+
     });
 
-}, 1000);
+}, 10);
