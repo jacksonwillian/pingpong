@@ -1,13 +1,15 @@
 // const width = window.innerWidth; 
 // const height = window.innerHeight; 
 
+const heightBat = 5;
+const marginBat = 10;
+
 const canvas = document.getElementById("myCanvas");
 
 canvas.width = 200;
-canvas.height = 350;
+canvas.height = 300;
 
 var ctx = canvas.getContext("2d");
-
 ctx.fillStyle = "#fff";
 
 const frame = new Base(0, 0, canvas.width, canvas.height, 'frame');
@@ -15,10 +17,10 @@ const frame = new Base(0, 0, canvas.width, canvas.height, 'frame');
 const ball = new Ball(100, 175);
 const movimentBall = new MultiDirection('down', 'left', 1);
 
-const playerBat = new Bat(74, 334);
+const playerBat = new Bat(74, (frame.height - heightBat - marginBat));
 const movimentPlayerBat = new UniDirection('stopping', 4);
 
-const computerBat = new Bat(74, 10);
+const computerBat = new Bat(74, (frame.y + marginBat));
 
 const objectsToDraw = [ball, playerBat, computerBat];
 const objectsToInteraction = [ball, playerBat, computerBat, frame];
