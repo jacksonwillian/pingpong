@@ -18,9 +18,10 @@ const ball = new Ball(100, 175);
 const movimentBall = new MultiDirection('down', 'left', 1);
 
 const playerBat = new Bat(74, (frame.height - heightBat - marginBat));
-const movimentPlayerBat = new UniDirection('stopping', 1);
+const movimentPlayerBat = new UniDirection('stopping', 2);
 
 const computerBat = new Bat(74, (frame.y + marginBat));
+const movimentComputerBat = new UniDirection('stopping', 1);
 
 const objectsToDraw = [ball, playerBat, computerBat];
 const objectsToInteraction = [ball, playerBat, computerBat, frame];
@@ -45,6 +46,18 @@ function moveBat(bat, movimentBat) {
     }
 }
 
+function moveComputerBat(frame, ball, computerBat, movimentComputerBat) {
+
+    if(ball.y < (frame.height/6) && computerBat.hasCollided(frame) !== movimentBall.horizontal && movimentBall.vertical === 'up') {
+        if(ball.x >= (computerBat.x + computerBat.width) ) {
+            movimentComputerBat.direction = 'right';
+        } else if(ball.x <= computerBat.x) {
+            movimentComputerBat.direction = 'left';
+        }
+        this.moveBat(computerBat, movimentComputerBat);
+    }
+}
+
 document.addEventListener("keydown", (event) => {
 
     if (event.defaultPrevented) {
@@ -62,8 +75,6 @@ document.addEventListener("keydown", (event) => {
 
 
 setInterval(() => {
-
-
 
 
     objectsToInteraction.forEach(object => {
@@ -90,6 +101,7 @@ setInterval(() => {
 
     this.moveBall(ball, movimentBall);
     this.moveBat(playerBat, movimentPlayerBat);
+    this.moveComputerBat(frame, ball, computerBat, movimentComputerBat);
 
 
     ctx.clearRect(
