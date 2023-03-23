@@ -19,24 +19,24 @@ class Base {
 
         if(this.type !== otherBase.type) {
             
-            // horizontal verification up
+            // horizontal verification down
             if(this.x >= otherBase.x && this.x <= (otherBase.x + otherBase.width) && this.y === otherBase.y) {
-                return {vertical: false, horizontal: true};
+                return 'down';
             }
             
-            // horizontal verification donw
+            // horizontal verification up
             if(this.x >= otherBase.x && this.x <= (otherBase.x + otherBase.width) && this.y === (otherBase.y + otherBase.height)) {
-                return {vertical: false, horizontal: true};
+                return 'up';
             }
 
             // vertical verification right
-            if(this.y >= otherBase.y && this.y <= (otherBase.y + otherBase.height) && this.x === (otherBase.x + otherBase.width)) {
-                return {vertical: true, horizontal: false};
+            if(this.y >= otherBase.y && this.y <= (otherBase.y + otherBase.height) && (this.x + this.width) >= (otherBase.x + otherBase.width)) {
+                return 'right';
             }
 
             // vertical verification left
-            if(this.y >= otherBase.y && this.y <= (otherBase.y + otherBase.height) && this.x === otherBase.x) {
-                return {vertical: true, horizontal: false};
+            if(this.y >= otherBase.y && this.y <= (otherBase.y + otherBase.height) && this.x <= otherBase.x) {
+                return 'left';
             }
         }   
     }

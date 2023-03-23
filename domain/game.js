@@ -2,7 +2,7 @@
 // const height = window.innerHeight; 
 
 const heightBat = 5;
-const marginBat = 10;
+const marginBat = 5;
 
 const canvas = document.getElementById("myCanvas");
 
@@ -18,7 +18,7 @@ const ball = new Ball(100, 175);
 const movimentBall = new MultiDirection('down', 'left', 1);
 
 const playerBat = new Bat(74, (frame.height - heightBat - marginBat));
-const movimentPlayerBat = new UniDirection('stopping', 4);
+const movimentPlayerBat = new UniDirection('stopping', 1);
 
 const computerBat = new Bat(74, (frame.y + marginBat));
 
@@ -51,13 +51,12 @@ document.addEventListener("keydown", (event) => {
         return;
     }
 
-    if (event.code === "ArrowLeft") {
-        movimentPlayerBat.direction = 'left';
-              
-    } else if (event.code === "ArrowRight") {
+    if (event.code === "ArrowLeft" && playerBat.hasCollided(frame) !== 'left') {
+        movimentPlayerBat.direction = 'left';    
+    } else if (event.code === "ArrowRight" && playerBat.hasCollided(frame) !== 'right') {
         movimentPlayerBat.direction = 'right';
-        
     }
+
 });
 
 
@@ -75,11 +74,14 @@ setInterval(() => {
             } else if (ball.y === frame.height) {
                 alert('Gol Computer');
             } else {
-                
-                if (collided.horizontal) {
-                    movimentBall.vertical = movimentBall.vertical === 'up' ? 'down' : 'up';
-                } else if (collided.vertical) {
-                    movimentBall.horizontal = movimentBall.horizontal === 'left' ? 'right' : 'left';
+                if (collided === 'up') {
+                    movimentBall.vertical = 'down';
+                } else if (collided === 'down') {
+                    movimentBall.vertical = 'up';
+                } else if (collided === 'right') {
+                    movimentBall.horizontal = 'left';
+                } else {
+                    movimentBall.horizontal = 'right';
                 }
             }
         }
