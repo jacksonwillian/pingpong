@@ -1,8 +1,21 @@
 // const width = window.innerWidth; 
 // const height = window.innerHeight; 
 
-const heightBat = 5;
-const marginBat = 5;
+const HEIGHT_BAT = 5;
+const MARGIN_BAT = 5;
+const SPEED      = 1;
+const STOPPED    = 0;
+const UP         = -1;
+const DOWN       = 1;
+const RIGHT      = 1;
+const LEFT       = -1;
+
+
+function getInitialBall() {
+    const verticalDirection = 1 * (-1)**Math.floor(Math.random() * 10);
+    const horizontalDirection = 1 * (-1)**Math.floor(Math.random() * 10);
+    return new Ball(100, 175, verticalDirection, horizontalDirection, SPEED);
+}
 
 const canvas = document.getElementById("myCanvas");
 
@@ -12,49 +25,37 @@ canvas.height = 300;
 var ctx = canvas.getContext("2d");
 ctx.fillStyle = "#fff";
 
-const frame = new Base(0, 0, canvas.width, canvas.height, 'frame');
+const frame = new Frame(0, 0, canvas.width, canvas.height);
 
-const ball = new Ball(100, 175);
-const movimentBall = new MultiDirection('down', 'left', 1);
+const playerBat = new Bat(74, (frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, 4);
 
-const playerBat = new Bat(74, (frame.height - heightBat - marginBat));
-const movimentPlayerBat = new UniDirection('stopping', 2);
+const computerBat = new Bat(74, (frame.y + MARGIN_BAT), STOPPED, SPEED);
 
-const computerBat = new Bat(74, (frame.y + marginBat));
-const movimentComputerBat = new UniDirection('stopping', 1);
-
-const objectsToDraw = [ball, playerBat, computerBat];
-const objectsToInteraction = [ball, playerBat, computerBat, frame];
+let ball = getInitialBall();
 
 
-function moveBall(ball, movimentBall) {
-    ball.y = movimentBall.vertical === 'up' ? --ball.y : ++ball.y;
-    ball.x = movimentBall.horizontal === 'right' ? ++ball.x : --ball.x;
+function moveBall(ball) {
+    ball.y = ball.y + (ball.speed * ball.verticalDirection);
+    ball.x = ball.x + (ball.speed * ball.horizontalDirection);
 }
 
-function moveBat(bat, movimentBat) {
-    if(movimentBat.direction && movimentBat.speed) {
-        if(movimentBat.direction === 'right') {
-            ++bat.x 
-            bat.x += movimentBat.speed;
-            
-        } else if(movimentBat.direction === 'left') {
-            --bat.x 
-            bat.x -= movimentBat.speed;
-        }
-        movimentBat.direction = 'stopping';
+function moveBat(bat) {
+    const newPosition = bat.x + (bat.speed * bat.horizontalDirection);
+    if (!frame.hasCollided({ ...bat, x: newPosition })) {
+        bat.x = bat.x + (bat.speed * bat.horizontalDirection);
     }
+    bat.horizontalDirection = STOPPED;
 }
 
-function moveComputerBat(frame, ball, computerBat, movimentComputerBat) {
+function moveComputerBat(frame, ball, computerBat) {
 
-    if(ball.y < (frame.height/6) && computerBat.hasCollided(frame) !== movimentBall.horizontal && movimentBall.vertical === 'up') {
-        if(ball.x >= (computerBat.x + computerBat.width) ) {
-            movimentComputerBat.direction = 'right';
-        } else if(ball.x <= computerBat.x) {
-            movimentComputerBat.direction = 'left';
+    if (ball.y < (frame.height/6) && ball.verticalDirection === UP) {
+        if (ball.x >= (computerBat.x + computerBat.width)) {
+            computerBat.horizontalDirection = RIGHT;
+        } else if (ball.x <= computerBat.x) {
+            computerBat.horizontalDirection = LEFT;
         }
-        this.moveBat(computerBat, movimentComputerBat);
+        this.moveBat(computerBat);
     }
 }
 
@@ -64,54 +65,51 @@ document.addEventListener("keydown", (event) => {
         return;
     }
 
-    if (event.code === "ArrowLeft" && playerBat.hasCollided(frame) !== 'left') {
-        movimentPlayerBat.direction = 'left';    
-    } else if (event.code === "ArrowRight" && playerBat.hasCollided(frame) !== 'right') {
-        movimentPlayerBat.direction = 'right';
+    if (event.code === "ArrowLeft") {
+        playerBat.horizontalDirection = LEFT;
+    } else if (event.code === "ArrowRight") {
+        playerBat.horizontalDirection = RIGHT;
     }
 
 });
 
 
 
-setInterval(() => {
+function game() {
 
+    const collidedFrame = frame.hasCollided(ball);
+    const collidedPlayerBat = playerBat.hasCollided(ball);
+    const collidedComputerBat = computerBat.hasCollided(ball);
 
-    objectsToInteraction.forEach(object => {
-        const collided = ball.hasCollided(object);
-        if (collided) {
-            if (ball.y === frame.y) {
-                alert('Gol Player');
-            } else if (ball.y === frame.height) {
-                alert('Gol Computer');
-            } else {
-                if (collided === 'up') {
-                    movimentBall.vertical = 'down';
-                } else if (collided === 'down') {
-                    movimentBall.vertical = 'up';
-                } else if (collided === 'right') {
-                    movimentBall.horizontal = 'left';
-                } else {
-                    movimentBall.horizontal = 'right';
-                }
-            }
+    if (collidedFrame) {
+
+        if (collidedFrame === 'up') {
+            ball = getInitialBall();
+        } else if (collidedFrame === 'down') {
+            ball = getInitialBall();
+        } else {
+            ball.horizontalDirection = ball.horizontalDirection * -1;
         }
+    }
 
-    });
+    if (collidedPlayerBat || collidedComputerBat) {
+        ball.verticalDirection = ball.verticalDirection * -1;
+    }
 
-    this.moveBall(ball, movimentBall);
-    this.moveBat(playerBat, movimentPlayerBat);
-    this.moveComputerBat(frame, ball, computerBat, movimentComputerBat);
+    this.moveBall(ball);
+    this.moveBat(playerBat);
+    this.moveComputerBat(frame, ball, computerBat);
 
-
+    
     ctx.clearRect(
         0,
         0,
         canvas.width,
         canvas.height
     );
-    
-    objectsToDraw.forEach(object => {
+
+
+    [ball, playerBat, computerBat].forEach(object => {
 
         ctx.fillRect(
             object.x,
@@ -121,5 +119,8 @@ setInterval(() => {
         );
 
     });
+    
+    requestAnimationFrame(game);
+}
 
-}, 20);
+game();
