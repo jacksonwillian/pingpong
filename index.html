@@ -47,6 +47,15 @@
         user-select: none; /* Standard syntax */
     }
 
+    #title {
+        font-size: 20px;
+        color: white;
+        display: block;
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 100px;
+    }
+
 
 
 </style>
@@ -55,6 +64,12 @@
 
     <div class="prevent-select" id="scoreView"></div>
     <div class="prevent-select" id="canvasView"></div>
+
+    <div id="title">
+        PING-PONG 
+        <br>
+        GAME
+    </div>
 
     <button id='startButton' class="prevent-select" type="button" title="START" onclick="start()">START</button>
 
@@ -71,14 +86,15 @@
     <script src="controllers/game.controller.js"></script>
 
     <script>
-        const gameController = new GameController();
-
-        let startButton = document.querySelector('#startButton');
+        const gameController     = new GameController();
+        const startButtonElement = document.querySelector('#startButton');
+        const titleElement       = document.querySelector('#title');
 
         function start() {
-            gameController.start(); 
-            startButton.title = 'RESTART';
-            startButton.textContent = 'RESTART';
+            gameController.start();
+            titleElement.style.display     = 'none';
+            startButtonElement.title       = 'RESTART';
+            startButtonElement.textContent = 'RESTART';
         }
     </script>
 
