@@ -15,26 +15,62 @@
         display: block;
     }
 
-    #myCanvas {
+    #score {
+        color: #fff;
         display: block;
         margin: 0 auto;
-        margin-top: 50px;
+        margin-top: 20px;
+        width: 120px;
+    }
+
+    #frame {
+        display: block;
+        margin: 0 auto;
+        margin-top: 20px;
         border: 1px solid #79d35b;
     }
+
+    #startButton {
+        display: block;
+        margin: 0 auto;
+        width: 100px;
+        margin-top: 20px;
+    }
+
+
 
 </style>
 
 <body>
 
-    <canvas id="myCanvas">
-        Your browser does not support the HTML canvas tag.
-    </canvas>
+    <div id="scoreView"></div>
+    <div id="canvasView"></div>
 
-    <script src="domain/base.js"></script>
-    <script src="domain/ball.js"></script>
-    <script src="domain/bat.js"></script>
-    <script src="domain/frame.js"></script>
-    <script src="domain/game.js"></script>
+    <button id='startButton' type="button" title="Start" onclick="start()">Start</button>
+
+    <script src="views/score.view.js"></script>
+    <script src="views/canvas.view.js"></script>
+
+    <script src="domains/score.js"></script>
+    <script src="domains/base.js"></script>
+    <script src="domains/ball.js"></script>
+    <script src="domains/bat.js"></script>
+    <script src="domains/frame.js"></script>
+    <script src="domains/game.js"></script>
+
+    <script src="controllers/game.controller.js"></script>
+
+    <script>
+        const gameController = new GameController();
+
+        let startButton = document.querySelector('#startButton');
+
+        function start() {
+            gameController.start(); 
+            startButton.title = 'Restart';
+            startButton.textContent = 'Restart';
+        }
+    </script>
 
 </body>
 
