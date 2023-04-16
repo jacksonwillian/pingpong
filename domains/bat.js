@@ -7,6 +7,7 @@ class Bat extends Base {
     */
     constructor(x, y, horizontalDirection, speed) {
         super(x, y,  60, 5, 'bat', 0, horizontalDirection, speed);
+        this._initialX = x;
     }
 
     hasCollided(otherBase) {
@@ -23,5 +24,10 @@ class Bat extends Base {
 
         }   
     }
+
+    initialPosition() {
+        this.x = this._initialX;
+    }
+
 
 }

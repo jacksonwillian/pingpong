@@ -86,10 +86,14 @@ class Game {
                 this._ball = this._getRandomInitialBall();
                 this._score.incrementPlayerBat();
                 this._scoreUpdateCallback(this._score);
+                this._playerBat.initialPosition();
+                this._computerBat.initialPosition();
             } else if (collidedFrame === 'down') {
                 this._ball = this._getRandomInitialBall();
                 this._score.incrementComputerBat();
                 this._scoreUpdateCallback(this._score);
+                this._playerBat.initialPosition();
+                this._computerBat.initialPosition();
             } else {
                 this._ball.horizontalDirection = this._ball.horizontalDirection * -1;
             }
