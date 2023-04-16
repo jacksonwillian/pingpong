@@ -13,6 +13,7 @@
         margin: 0 auto;
         background-color: #000;
         display: block;
+        font-family: "Gill Sans", sans-serif;
     }
 
     #score {
@@ -20,7 +21,8 @@
         display: block;
         margin: 0 auto;
         margin-top: 20px;
-        width: 140px;
+        width: 200px;
+        text-align: center;
     }
 
     #frame {
@@ -35,6 +37,14 @@
         margin: 0 auto;
         width: 100px;
         margin-top: 20px;
+        font-weight: 600;
+    }
+
+    .prevent-select {
+        /* desabilita a seleção do texto no html */
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
     }
 
 
@@ -43,10 +53,10 @@
 
 <body>
 
-    <div id="scoreView"></div>
-    <div id="canvasView"></div>
+    <div class="prevent-select" id="scoreView"></div>
+    <div class="prevent-select" id="canvasView"></div>
 
-    <button id='startButton' type="button" title="Start" onclick="start()">Start</button>
+    <button id='startButton' class="prevent-select" type="button" title="START" onclick="start()">START</button>
 
     <script src="views/score.view.js"></script>
     <script src="views/canvas.view.js"></script>
@@ -67,8 +77,8 @@
 
         function start() {
             gameController.start(); 
-            startButton.title = 'Restart';
-            startButton.textContent = 'Restart';
+            startButton.title = 'RESTART';
+            startButton.textContent = 'RESTART';
         }
     </script>
 

@@ -8,7 +8,7 @@ class ScoreView {
     _template(playerScore, computerScore) {
         return `
         <div id="${this._idScore}">
-            Player ${playerScore} x ${computerScore} CPU 
+                YOU <b>${playerScore} x ${computerScore}</b>  CPU 
         </div>`;
     }
 
