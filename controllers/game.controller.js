@@ -2,20 +2,37 @@ class GameController {
 
     constructor() {
 
+        this._audios = new Map();
+        ['ball', 'whistle'].forEach((name)=> {
+            const file = `./asserts/${name}.mp3?cb=${new Date().getTime()}`;
+            const audio = new Audio(file);
+            audio.load();
+            this._audios.set(name, audio);
+        });
+
         this._idScore    = 'score';
         this._idCanvas   = 'frame';
         this._scoreView  = new ScoreView(document.querySelector('#scoreView'), this._idScore);
-        this._canvasView = new CanvasView(document.querySelector('#canvasView'), this._idCanvas); 
-        this._game       = new Game((score) => {
-            console.log(score);
-            this._scoreView.update(score.playerBat, score.computerBat);
-        });
+        this._canvasView = new CanvasView(document.querySelector('#canvasView'), this._idCanvas);
+
+        this._game       = new Game(
+            (score) => {
+                this._audios.get('whistle').play().then(() => {
+                    this._scoreView.update(score.playerBat, score.computerBat);
+                });
+            },
+            (collided) => {
+                console.log(collided)
+                this._audios.get('ball').play();
+            }
+        );
 
         this._playerBatInputCommandBind();
+
     }
 
     start() {
-        this._scoreView.update(0,0);
+
         this._canvasView.update();
 
         const canvas = document.getElementById(this._idCanvas);

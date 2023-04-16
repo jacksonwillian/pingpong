@@ -12,17 +12,21 @@ const LEFT       = -1;
 
 class Game {
 
-
-    constructor(scoreUpdateCallback) {
-        if(!scoreUpdateCallback) {
-            throw Error('Uninitialized score update callback');
+    constructor(scoreUpdateCallback, collidedCallback) {
+        if(!scoreUpdateCallback || !collidedCallback) {
+            throw Error('Uninitialized callbacks');
         }
-        this._scoreUpdateCallback = scoreUpdateCallback;
+        this._scoreUpdateCallback   = scoreUpdateCallback;
+        this._collidedCallback      = collidedCallback;
         this._requestAnimationFrame = null;
+        this._started               = false;
     }
 
 
     start(canvas, ctx) {
+
+        this._started = true;
+
         this._frame = new Frame(0, 0, canvas.width, canvas.height);
     
         this._playerBat = new Bat(74, (this._frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, SPEED + SPEED);
@@ -30,6 +34,8 @@ class Game {
         this._computerBat = new Bat(74, (this._frame.y + MARGIN_BAT), STOPPED, SPEED);
         
         this._score = new Score();
+
+        this._scoreUpdateCallback(this._score);
         
         this._ball = this._getRandomInitialBall();
 
@@ -87,7 +93,9 @@ class Game {
             } else {
                 this._ball.horizontalDirection = this._ball.horizontalDirection * -1;
             }
+            this._collidedCallback('frame');
         } else if (collidedPlayerBat || collidedComputerBat) {
+            this._collidedCallback('bat')
             this._ball.verticalDirection = this._ball.verticalDirection * -1;
         }
     
@@ -124,10 +132,13 @@ class Game {
 
 
     movePlayerBat(direction){
-        this._playerBat.horizontalDirection = direction;
+        if(this._started) {
+            this._playerBat.horizontalDirection = direction;
+        }
     }
 
     stop() {
+        this._started = false;
         if(this._requestAnimationFrame) {
             cancelAnimationFrame(this._requestAnimationFrame);
         }
