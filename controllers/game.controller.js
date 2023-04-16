@@ -11,37 +11,7 @@ class GameController {
             this._scoreView.update(score.playerBat, score.computerBat);
         });
 
-        document.addEventListener("keydown", (event) => {
-    
-            if (event.defaultPrevented) {
-                return;
-            }
-        
-            if (event.code === "ArrowLeft") {
-                this._game.movePlayerBat(LEFT);
-            } else if (event.code === "ArrowRight") {
-                this._game.movePlayerBat(RIGHT);
-            }
-        
-        });
-
-        document.addEventListener("mousemove", (event) => {
-            
-    
-            if (event.defaultPrevented) {
-                return;
-            }
-
-            const midpoint = window.innerWidth/2; 
-        
-            if (event.clientX < midpoint) {
-                this._game.movePlayerBat(LEFT);
-            } else if (event.clientX > midpoint) {
-                this._game.movePlayerBat(RIGHT);
-            }
-        
-        });
-
+        this._playerBatInputCommandBind();
     }
 
     start() {
@@ -56,6 +26,72 @@ class GameController {
 
         this._game.stop();
         this._game.start(canvas, ctx);
+    }
+
+
+    _playerBatInputCommandBind() {
+        document.addEventListener("keydown", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            if (event.code === "ArrowLeft") {
+                this._game.movePlayerBat(LEFT);
+            } else if (event.code === "ArrowRight") {
+                this._game.movePlayerBat(RIGHT);
+            }
+        });
+
+        document.addEventListener("keyup", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            if (event.code === "ArrowLeft" || event.code === "ArrowRight") {
+                this._game.movePlayerBat(STOPPED);
+            }
+        });
+
+        document.addEventListener("mousedown", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            const midpoint = window.innerWidth/2; 
+            if (event.clientX < midpoint) {
+                this._game.movePlayerBat(LEFT);
+            } else if (event.clientX > midpoint) {
+                this._game.movePlayerBat(RIGHT);
+            }
+        });
+
+        document.addEventListener("mouseup", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            this._game.movePlayerBat(STOPPED);
+        });
+
+        document.addEventListener("touchstart", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            const midpoint = window.innerWidth/2; 
+            let touch = null;
+            for(let i = 0; i < event.touches.length; i++) {
+                touch =  event.touches[i];
+                if (touch.clientX < midpoint) {
+                    this._game.movePlayerBat(LEFT);
+                } else if (touch.clientX > midpoint) {
+                    this._game.movePlayerBat(RIGHT);
+                }
+            }
+        });
+
+        document.addEventListener("touchend", (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            this._game.movePlayerBat(STOPPED);
+        });
+
     }
 
 

@@ -25,7 +25,7 @@ class Game {
     start(canvas, ctx) {
         this._frame = new Frame(0, 0, canvas.width, canvas.height);
     
-        this._playerBat = new Bat(74, (this._frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, SPEED+2);
+        this._playerBat = new Bat(74, (this._frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, SPEED + SPEED);
         
         this._computerBat = new Bat(74, (this._frame.y + MARGIN_BAT), STOPPED, SPEED);
         
@@ -54,12 +54,11 @@ class Game {
         if (!frame.hasCollided({ ...bat, x: newPosition })) {
             bat.x = bat.x + (bat.speed * bat.horizontalDirection);
         }
-        bat.horizontalDirection = STOPPED;
     }
     
     _moveComputerBat(frame, ball, computerBat) {
     
-        if (ball.y < (frame.height/6) && ball.verticalDirection === UP) {
+        if (ball.y < (frame.height/3) && ball.verticalDirection === UP) {
             if (ball.x >= (computerBat.x + computerBat.width)) {
                 computerBat.horizontalDirection = RIGHT;
             } else if (ball.x <= computerBat.x) {
