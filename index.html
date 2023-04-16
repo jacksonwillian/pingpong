@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong</title>
+</head>
+<style>
+    
+    body {
+        margin: 0 auto;
+        background-color: #000;
+        display: block;
+        font-family: "Gill Sans", sans-serif;
+        zoom: 160%;
+    }
+
+    #score {
+        color: #fff;
+        display: block;
+        margin: 0 auto;
+        margin-top: 20px;
+        width: 200px;
+        text-align: center;
+    }
+
+    #frame {
+        display: block;
+        margin: 0 auto;
+        margin-top: 20px;
+        border: 1px solid #9c9c9c;
+    }
+
+    #startButton {
+        display: block;
+        margin: 0 auto;
+        width: 100px;
+        margin-top: 20px;
+        font-weight: 600;
+    }
+
+    .prevent-select {
+        /* desabilita a seleção do texto no html */
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
+
+    #title {
+        font-size: 20px;
+        color: white;
+        display: block;
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 100px;
+    }
+
+    @keyframes shinekey {
+        10% {color: #585858}
+        25% {color: #fffefe}
+        50% {color: #000}
+        100% {color: #1f1f1f}
+    }
+
+
+    #startButton.shine {
+        animation: shinekey 3s infinite linear;
+    }
+
+
+
+
+
+
+</style>
+
+<body>
+
+    <div class="prevent-select" id="scoreView"></div>
+    <div class="prevent-select" id="canvasView"></div>
+
+    <div id="title">
+        PING-PONG 
+        <br>
+        GAME
+    </div>
+
+    <button id='startButton' class="prevent-select shine" type="button" title="START" onclick="start()">START</button>
+
+    <script src="views/score.view.js"></script>
+    <script src="views/canvas.view.js"></script>
+
+    <script src="domains/score.js"></script>
+    <script src="domains/base.js"></script>
+    <script src="domains/ball.js"></script>
+    <script src="domains/bat.js"></script>
+    <script src="domains/frame.js"></script>
+    <script src="domains/game.js"></script>
+
+    <script src="controllers/game.controller.js"></script>
+
+    <script>
+        const gameController     = new GameController();
+        const startButtonElement = document.querySelector('#startButton');
+        const titleElement       = document.querySelector('#title');
+
+        function start() {
+            gameController.start();
+            startButtonElement.classList.remove('shine');
+            startButtonElement.title       = 'RESTART';
+            startButtonElement.textContent = 'RESTART';
+            titleElement.style.display     = 'none';
+        }
+    </script>
+
+</body>
+
+</html>
