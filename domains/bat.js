@@ -6,7 +6,7 @@ class Bat extends Base {
     * @param  speed
     */
     constructor(x, y, horizontalDirection, speed) {
-        super(x, y,  60, 5, 'bat', 0, horizontalDirection, speed);
+        super(x, y,  WIDTH_BAT, HEIGHT_BAT, 'bat', 0, horizontalDirection, speed);
         this._initialX = x;
     }
 

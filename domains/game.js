@@ -2,6 +2,7 @@
 // const height = window.innerHeight; 
 
 const HEIGHT_BAT = 5;
+const WIDTH_BAT  = 60;
 const MARGIN_BAT = 5;
 const SPEED      = 1;
 const STOPPED    = 0;
@@ -29,7 +30,7 @@ class Game {
 
         this._frame = new Frame(0, 0, canvas.width, canvas.height);
     
-        this._playerBat = new Bat(74, (this._frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, SPEED + SPEED);
+        this._playerBat = new Bat((this._frame.width/2) - (WIDTH_BAT/2), (this._frame.height - HEIGHT_BAT - MARGIN_BAT), STOPPED, SPEED);
         
         this._computerBat = new Bat(74, (this._frame.y + MARGIN_BAT), STOPPED, SPEED);
         
@@ -46,7 +47,7 @@ class Game {
     _getRandomInitialBall() {
         const verticalDirection = 1 * (-1)**Math.floor(Math.random() * 10);
         const horizontalDirection = 1 * (-1)**Math.floor(Math.random() * 10);
-        return new Ball(100, 175, verticalDirection, horizontalDirection, SPEED);
+        return new Ball(100, this._frame.height/2, verticalDirection, horizontalDirection, SPEED);
     }
     
     
@@ -64,7 +65,7 @@ class Game {
     
     _moveComputerBat(frame, ball, computerBat) {
     
-        if (ball.y < (frame.height/3) && ball.verticalDirection === UP) {
+        if (ball.y < (frame.height/3.5) && ball.verticalDirection === UP) {
             if (ball.x >= (computerBat.x + computerBat.width)) {
                 computerBat.horizontalDirection = RIGHT;
             } else if (ball.x <= computerBat.x) {

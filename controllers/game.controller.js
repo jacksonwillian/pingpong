@@ -17,12 +17,10 @@ class GameController {
 
         this._game       = new Game(
             (score) => {
-                this._audios.get('whistle').play().then(() => {
-                    this._scoreView.update(score.playerBat, score.computerBat);
-                });
+                this._audios.get('whistle').play();
+                this._scoreView.update(score.playerBat, score.computerBat);
             },
             (collided) => {
-                console.log(collided)
                 this._audios.get('ball').play();
             }
         );

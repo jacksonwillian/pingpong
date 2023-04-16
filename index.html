@@ -14,6 +14,7 @@
         background-color: #000;
         display: block;
         font-family: "Gill Sans", sans-serif;
+        zoom: 160%;
     }
 
     #score {
@@ -29,7 +30,7 @@
         display: block;
         margin: 0 auto;
         margin-top: 20px;
-        border: 1px solid #79d35b;
+        border: 1px solid #9c9c9c;
     }
 
     #startButton {
@@ -56,6 +57,21 @@
         margin-bottom: 100px;
     }
 
+    @keyframes shinekey {
+        10% {color: #585858}
+        25% {color: #fffefe}
+        50% {color: #000}
+        100% {color: #1f1f1f}
+    }
+
+
+    #startButton.shine {
+        animation: shinekey 3s infinite linear;
+    }
+
+
+
+
 
 
 </style>
@@ -71,7 +87,7 @@
         GAME
     </div>
 
-    <button id='startButton' class="prevent-select" type="button" title="START" onclick="start()">START</button>
+    <button id='startButton' class="prevent-select shine" type="button" title="START" onclick="start()">START</button>
 
     <script src="views/score.view.js"></script>
     <script src="views/canvas.view.js"></script>
@@ -92,9 +108,10 @@
 
         function start() {
             gameController.start();
-            titleElement.style.display     = 'none';
+            startButtonElement.classList.remove('shine');
             startButtonElement.title       = 'RESTART';
             startButtonElement.textContent = 'RESTART';
+            titleElement.style.display     = 'none';
         }
     </script>
 
